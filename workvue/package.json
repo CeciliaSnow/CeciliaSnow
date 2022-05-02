@@ -1,0 +1,40 @@
+{
+  "name": "workvue",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "axios": "^0.24.0",
+    "core-js": "^3.6.5",
+    "element-plus": "^1.3.0-beta.5",
+    "vue": "^3.0.0",
+    "vue-router": "^4.0.0-0",
+    "vuex": "^4.0.0-0",
+    "wangeditor": "^4.7.11"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.3",
+    "@testing-library/user-event": "^14.0.4",
+    "@testing-library/vue": "^6.4.2",
+    "@types/jest": "^27.4.1",
+    "@vue/babel-preset-app": "^5.0.4",
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-router": "~4.5.0",
+    "@vue/cli-plugin-vuex": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/compiler-sfc": "^3.0.0",
+    "@vue/test-utils": "^2.0.0-rc.18",
+    "babel-jest": "^26.0.0",
+    "jest": "^26.0.0",
+    "ts-jest": "^26.4.4",
+    "vue-jest": "^5.0.0-alpha.10"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
