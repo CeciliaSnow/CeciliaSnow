@@ -1,5 +1,6 @@
 package com.cecilia.work.common;
 
+import com.cecilia.work.handle.Result;
 import com.cecilia.work.mapper.UserMapper;
 import com.cecilia.work.pojo.User;
 import org.apache.shiro.SecurityUtils;

@@ -203,19 +203,23 @@ export default {
       }
     },
     juese(){
-      let userStr = sessionStorage.getItem("user") || "{}";
-      this.user = JSON.parse(userStr);
-      if(this.user){
-        axioss.post("/user/sel/"+this.user.id).then(res=>{
-                  this.user = res.data.data
-                  this.radio = this.user.role
-                  this.centerDialogVisible=true
-                });
+      if(this.user.role==1||this.user.role==2){
+        let userStr = sessionStorage.getItem("user") || "{}";
+        this.user = JSON.parse(userStr);
+        if(this.user){
+          axioss.post("/user/sel/"+this.user.id).then(res=>{
+                    this.user = res.data.data
+                    this.radio = this.user.role
+                    this.centerDialogVisible=true
+                  });
+        }else{
+          this.$message({
+              type: "success",
+              message: "请登录",
+            });
+        }
       }else{
-        this.$message({
-            type: "success",
-            message: "请登录",
-          });
+        this.centerDialogVisible=false
       }
     },
     juese1(){

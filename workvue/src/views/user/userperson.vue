@@ -127,13 +127,13 @@ export default {
             pass1:'',
             pass2:''
           },
-          pic:"http://localhost:9090/pic/upload/",
+          pic:"http://"+window.server.filesUploadUrl+":9090/pic/upload/",
           pics:"",
 
           fileList:[],
-          resume:'http://localhost:9090/resume/upload/',
+          resume:"http://"+window.server.filesUploadUrl+":9090/resume/upload/",
           resume2:"",
-          resume3:"http://localhost:9090/resume/d",
+          resume3:"http://"+window.server.filesUploadUrl+":9090/resume/d",
           dialogVisible:false,
           dialogFormVisible3:false,
           

@@ -106,7 +106,7 @@ export default {
            dialogFormVisible4:false,
           user:{},
           user2:{},
-          pic:"http://localhost:9090/pic/upload/",
+          pic:"http://"+window.server.filesUploadUrl+":9090/pic/upload/",
           pics:"",
           passs2:{
             id:'',

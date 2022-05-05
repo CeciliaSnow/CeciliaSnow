@@ -84,7 +84,7 @@
     background-size: cover;
 }
 .fu{
-    flex:2;
+    flex:2.5;
     height: 100vh;
     background-image: url('../assets/pic/bc.jpg');
     background-repeat:no-repeat;
@@ -163,26 +163,33 @@ export default {
       this.$router.push('/register')
     },
     login(){
-      axioss.post('/user/login',this.ruleForm).then(res=>{
-          if(res.data.code === '0'){
-            this.$message({
-              type:"success",
-              message:"登录成功"
-            })
-            sessionStorage.setItem("user",JSON.stringify(res.data.data))
-            if(res.data.data.role==1){
-               this.$router.push("/person")
-            }else{
-              this.$router.push("/person2")
-            }
-            
-          }else{
-            this.$message({
-              type:"error",
-              message: res.data.msg
-            })
-          }
-      })
+      if(this.ruleForm.username!="admin"&&this.ruleForm.password!="admin"){
+          axioss.post('/user/login',this.ruleForm).then(res=>{
+              if(res.data.code === '0'){
+                this.$message({
+                  type:"success",
+                  message:"登录成功"
+                })
+                sessionStorage.setItem("user",JSON.stringify(res.data.data))
+                if(res.data.data.role==1){
+                  this.$router.push("/person")
+                }else{
+                  this.$router.push("/person2")
+                }
+                
+              }else{
+                this.$message({
+                  type:"error",
+                  message: res.data.msg
+                })
+              }
+          })
+      }else{
+         this.$message({
+                  type:"error",
+                  message: "此账号最好不要登录用户！！！"
+                })
+      }
     },
     login2(){
       axioss.post('/user/adminlogin',this.ruleForm2).then(res=>{

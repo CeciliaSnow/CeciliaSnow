@@ -11,6 +11,7 @@ import com.cecilia.work.pojo.Work;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,30 +29,40 @@ import java.util.List;
 public class FilePicController {
     @Value("${server.port}")
     private String port;
-    private static final String ip="http://localhost";
+    @Value("${fileip}")
+    private String ip;
     @Autowired
     UserMapper userMapper;
     @RequestMapping("/upload/{id}")
     public Result<?> upload(MultipartFile file, @PathVariable("id") int id) throws IOException {
+//        String path =System.getProperty("user.dir")+"\\src\\main\\resources\\filess\\pic\\";
+        String path ="/home/server/files/pic/";
+        User user = userMapper.selectById(id);
+//        删除文件
+        List<String> d = FileUtil.listFileNames(path);
+        String del = d.stream().filter(name->name.contains(user.getId()+"-")).findAny().orElse("");
+        if(StringUtils.isNotEmpty(del)){
+            File file1 = new File(path+del);
+            file1.delete();
+        }
+//        上传文件
         String filename = file.getOriginalFilename();
-        String path =System.getProperty("user.dir")+"\\src\\main\\resources\\filess\\pic\\";
         String flag = IdUtil.fastSimpleUUID();
         //        地址加文件名路径
         String path2 = path+id+"-"+flag+"_"+filename;
 //        写入
         FileUtil.writeBytes(file.getBytes(),path2);
-        User user = userMapper.selectById(id);
-        List<String> s = FileUtil.listFileNames(path);
 //        地址
-        user.setPic(ip+":"+port+"/pic/down/"+id+"/"+flag);
+        user.setPic("http://"+ip+":"+port+"/pic/down/"+id+"/"+flag);
         userMapper.updateById(user);
-        return Result.success(ip+":"+port+"/pic/down/"+id+"/"+flag);
+        return Result.success("http://"+ip+":"+port+"/pic/down/"+id+"/"+flag);
     }
     @RequestMapping("/down/{id}/{flag}")
     public void down(HttpServletResponse response, @PathVariable("id") int id,@PathVariable("flag")String flag){
         User user = userMapper.selectById(id);
         if(!user.getPic().equals("") && !user.getPic().equals(null)){
-            String basepath = System.getProperty("user.dir")+"\\src\\main\\resources\\filess\\pic\\";
+//            String basepath = System.getProperty("user.dir")+"\\src\\main\\resources\\filess\\pic\\";
+            String basepath ="/home/server/files/pic/";
             List<String> s = FileUtil.listFileNames(basepath);
             String filename = s.stream().filter(name->name.contains(user.getId()+"-"+flag)).findAny().orElse("");
             try {

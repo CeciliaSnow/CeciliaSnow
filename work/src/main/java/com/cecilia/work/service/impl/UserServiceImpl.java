@@ -103,7 +103,15 @@ public class UserServiceImpl implements UserService {
     }
 //    更新
     public Result<?> update(User user){
-        userMapper.updateById(user);
+        String username = user.getUsername();
+        String password = user.getPassword();
+        if(username.equals("admin")&&password.equals("admin")){
+            return Result.error("-1","admin账户不允许更改");
+        }
+        int i = userMapper.updateById(user);
+        if(i<=0){
+            return Result.error("-1","异常");
+        }
         return Result.success();
     }
 //    逻辑删除

@@ -20,6 +20,6 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: auto
-
 server:
   port: 9090
+fileip: 47.101.61.168

@@ -25,20 +25,31 @@ public class ResumeController {
     UserMapper userMapper;
     @Value("${server.port}")
     private String port;
-    private static final String ip="http://localhost";
+    @Value("${fileip}")
+    private String ip;
     @RequestMapping("/upload/{id}")
     public Result<?> upload(MultipartFile file,@PathVariable("id") int id) throws IOException {
         String filename = file.getOriginalFilename();
-        String path = System.getProperty("user.dir")+"\\src\\main\\resources\\filess\\resume\\";
+//        String path = System.getProperty("user.dir")+"\\src\\main\\resources\\filess\\resume\\";
+        String path = "/home/server/files/resume/";
+        User user = userMapper.selectById(id);
+        //        删除文件
+        List<String> d2 = FileUtil.listFileNames(path);
+        String del = d2.stream().filter(name->name.contains(user.getId()+"-")).findAny().orElse("");
+        if(StringUtils.isNotEmpty(del)){
+            File file1 = new File(path+del);
+            file1.delete();
+        }
+
+
         String flag = IdUtil.fastSimpleUUID();
         //        地址加文件名路径
         String path2 = path+id+"-"+flag+"_"+filename;
 //        写入
         FileUtil.writeBytes(file.getBytes(),path2);
 //        地址
-        User user = userMapper.selectById(id);
-        String d = ip+":"+port+"/resume/down/"+id+"/"+flag;
-//        String d = "/resume/down/"+id+"/"+flag;
+
+        String d = "http://"+ip+":"+port+"/resume/down/"+id+"/"+flag;
         user.setResume(d);
         userMapper.updateById(user);
         return Result.success(d);
@@ -48,7 +59,8 @@ public class ResumeController {
     public void down(HttpServletResponse response, @PathVariable("id") int id, @PathVariable("flag") String flag){
         User user = userMapper.selectById(id);
         if(!user.getResume().equals("") && !user.getResume().equals(null)){
-            String basepath = System.getProperty("user.dir")+"\\src\\main\\resources\\filess\\resume\\";
+//            String basepath = System.getProperty("user.dir")+"\\src\\main\\resources\\filess\\resume\\";
+            String basepath = "/home/server/files/resume/";
             List<String> s = FileUtil.listFileNames(basepath);
             String filename = s.stream().filter(name->name.contains(id+"-"+flag)).findAny().orElse("");
             try {
@@ -75,7 +87,8 @@ public class ResumeController {
     public Result<?> deleteFile(@PathVariable("id") int id, @PathVariable("flag")String flag) {
         User user = userMapper.selectById(id);
         if(!user.getResume().equals("") && !user.getResume().equals(null)){
-            String basepath = System.getProperty("user.dir")+"\\src\\main\\resources\\filess\\resume\\";
+//            String basepath = System.getProperty("user.dir")+"\\src\\main\\resources\\filess\\resume\\";
+            String basepath = "/home/server/files/resume/";
             List<String> s = FileUtil.listFileNames(basepath);
             String filename = s.stream().filter(name->name.contains(user.getId()+"-"+flag)).findAny().orElse("");
             try {
@@ -102,7 +115,8 @@ public class ResumeController {
     }
     @GetMapping("/d")
     public void down(HttpServletResponse response){
-            String basepath = System.getProperty("user.dir")+"\\src\\main\\resources\\filess\\resume\\";
+//            String basepath = System.getProperty("user.dir")+"\\src\\main\\resources\\filess\\resume\\";
+            String basepath = "/home/server/files/resume/";
             List<String> s = FileUtil.listFileNames(basepath);
             String filename = s.stream().filter(name->name.contains("resume")).findAny().orElse("");
             try {

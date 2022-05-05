@@ -78,6 +78,13 @@
       <el-form-item label="密码">
       <el-input type="password" v-model="form.password"></el-input>
       </el-form-item>
+      <el-form-item label="权限" prop="role">
+        <el-radio-group v-model="form.role">
+          <el-radio label="1">工作者</el-radio>
+          <el-radio label="2">招聘者</el-radio>
+          <el-radio label="3">管理员</el-radio>
+        </el-radio-group>
+      </el-form-item>
       <el-form-item label="性别" prop="sex">
         <el-radio-group v-model="form.sex">
           <el-radio label="男"></el-radio>
@@ -145,6 +152,7 @@ export default {
         search : this.search}
         }).then(res=>{
         this.tableData = res.data.data.records,
+        console.log(this.tableData)
         this.total=res.data.data.total
         this.loading=false
       })
@@ -171,7 +179,7 @@ export default {
             }else{
               this.$message({
                 type: "error",
-                message:"更新失败"
+                message:res.data.msg
               })
             }
           })
